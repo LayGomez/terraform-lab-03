@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "app" {
   bucket = "${var.proyecto}-${random_id.sufijo.hex}"
 
   tags = {
-    Name = "${var.proyecto}-bucket"
+    Name      = "${var.proyecto}-bucket"
     ManagedBy = "Terraform"
   }
 }
@@ -27,16 +27,15 @@ resource "aws_iam_user_policy" "s3_access" {
   name = "${var.nombre_usuario}-s3-policy"
   user = aws_iam_user.app.name # depende del usuario
 
-  policy = jsonencode( {
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-        Effect = "Allow"
-        Action = ["s3:GetObjetct", "s3:PutObject", "s3:ListBucket"]
-        Resourse = [
-            aws_s3_bucket.app.arn,
-            "${aws_s3_bucket.app.arn}/*",
-        ]
-
+      Effect = "Allow"
+      Action = ["s3:GetObjetct", "s3:PutObject", "s3:ListBucket", "s3:DeleteObjetct"]
+      Resource = [
+        aws_s3_bucket.app.arn,
+        "${aws_s3_bucket.app.arn}/*",
+      ]
     }]
   })
 }
