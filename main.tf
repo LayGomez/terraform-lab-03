@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "app" {
   bucket = "${var.proyecto}-${random_id.sufijo.hex}"
 
   tags = {
-    Name = "${var-proyecto}-bucket"
+    Name = "${var.proyecto}-bucket"
     ManagedBy = "Terraform"
   }
 }
@@ -27,7 +27,7 @@ resource "aws_iam_user_policy" "s3_access" {
   name = "${var.nombre_usuario}-s3-policy"
   user = aws_iam_user.app.name # depende del usuario
 
-  policy = jsondecode( {
+  policy = jsonencode( {
     Version = "2012-10-17"
     Statement = [{
         Effect = "Allow"
